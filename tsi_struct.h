@@ -43,11 +43,6 @@ struct register_info {
 
     uint8_t reserved11[0xFF - 0x48]; 
 
-// set-base-address
-// set-master-parameters
-// notacja ważna czy little-endian czy big-endian
-// tutaj zasoby fizyczne a potem trzeba zasoby logiczne devmem (wirtualny zakres adresów)
-// master 0
     uint32_t OTSAU0;
     uint32_t OTSAL0;
     uint32_t OTEAU0;
@@ -56,7 +51,7 @@ struct register_info {
     uint32_t OTOFL0;
     uint32_t OTBS0;
     uint32_t OTAT0;
-// master 1 i tak dalej
+
     uint32_t OTSAU1;  
     uint32_t OTSAL1;  
     uint32_t OTEAU1;  
