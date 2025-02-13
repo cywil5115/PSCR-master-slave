@@ -6,16 +6,6 @@ uint32_t to_big_endian(uint32_t val) {
     return ((val >> 24) & 0x000000FF) | ((val >> 8) & 0x0000FF00) | ((val << 8) & 0x00FF0000) | ((val << 24) & 0xFF000000);
 }
 
-// READ DATA
-uint32_t read_register(volatile struct register_info *regs, uint32_t address) {
-    return *(volatile uint32_t *)address;
-}
-
-// WRITE DATA
-void write_register(volatile struct register_info *regs, uint32_t address, uint32_t value) {
-    *(volatile uint32_t *)address = value;
-}
-
 // Starting Address Master
 void set_starting_address(volatile struct register_info *regs, uint32_t address, int master_index) {
     switch (master_index) {
