@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "tsi_struct.h"  // Zawiera definicję struktury register_info
+#include "tsi_struct.h"  // Zawiera definicje struktury register_info
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/neutrino.h>
@@ -10,6 +10,7 @@
 uint32_t to_big_endian(uint32_t val) {
     return ((val >> 24) & 0x000000FF) | ((val >> 8) & 0x0000FF00) | ((val << 8) & 0x00FF0000) | ((val << 24) & 0xFF000000);
 }
+//************************//
 
 // Starting Address Master //
 void set_starting_upper_address(volatile struct register_info *regs, uint32_t address, int master_index) {
@@ -79,11 +80,12 @@ void set_offset_lower_address(volatile struct register_info *regs, uint32_t addr
     }
 }
 //************************//
+
 // Attribute Address Master
 void set_attribute_address(volatile struct register_info *regs, uint32_t address, int master_index) {
     switch (master_index) {
         case 0:
-            regs->OTAT0 = to_big_endian(address);   // starting lower address master 0
+            regs->OTAT0 = to_big_endian(address);   // attribute address master 0
             break;
         default:
             // Wrong master_index
@@ -129,14 +131,14 @@ void* set_master (
             //***//
             set_attribute_address(regs, attribute_address, master_index);
 
-            addr_start_full = (starting_upper_address<<31) + (starting_lower_address); // łączenie
-            addr_end_full = (ending_upper_address<<31) + (ending_lower_address);       // łączenie
+            addr_start_full = (starting_upper_address<<31) + (starting_lower_address); // laczenie
+            addr_end_full = (ending_upper_address<<31) + (ending_lower_address);       // laczenie
             addr = addr_end_full - addr_start_full;
 
             uint32_t d32;
-            d32 = to_big_endian(regs->OTAT0);            // Convert the value from OTAT0 register to big-endian format
-            d32 |= 0x80000000;                           // Set MSB to 1,  OR with the mask 0x80000000
-            regs->OTAT0 = to_big_endian(d32);            // Convert the modified value back to big-endian format and store it in OTAT0
+            d32 = to_big_endian(regs->OTAT0);// Convert the value from OTAT0 register to big-endian format
+            d32 |= 0x80000000;               // Set MSB to 1,  OR with the mask 0x80000000
+            regs->OTAT0 = to_big_endian(d32);// Convert the modified value back to big-endian format and store it in OTAT0
 
             return mmap_device_memory( NULL, ending_lower_address - starting_lower_address, PROT_READ|PROT_WRITE|PROT_NOCACHE, MAP_SHARED, addr_start_full );
             break;    
